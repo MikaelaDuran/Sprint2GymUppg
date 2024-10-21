@@ -8,8 +8,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class MembershipTest {
 
@@ -42,6 +42,8 @@ public class MembershipTest {
         customerList.add(nonCustomer);
         membership=new Membership(customerList);
     }
+
+    //TODO:TESTAR METODEN checkMembership
     @Test
     public void currentMemberTest() {
         assertEquals("Nuvarande medlem",membership.checkMembership(currentCustomer));
@@ -60,7 +62,32 @@ public class MembershipTest {
         assertEquals("Obehörig",membership.checkMembership(nonCustomer));
         assertNotEquals("Obehörig",membership.checkMembership(formerCustomer));
 
+    }
 
+
+    FileUtil fileUtil = new FileUtil();
+    String inFile = "Test/BestGymEver/TestData.txt";
+
+    //TODO: TESTA METODEN ATT FINNA KUNDER i Membership
+    @Test
+    void findCustomerByInputTest(){
+        List<Customer> customer = fileUtil.readDataFromFile(inFile);
+        Membership membership = new Membership(customer);
+
+        //Hitta kund via personnummer
+        Customer c1 = membership.findCustomerByInput("7703021234");
+        assertEquals("Alhambra Aromes", c1.getName());
+        assertNotEquals("Mikaela Duran", c1.getName());
+
+        //Hitta kund via namn
+        Customer c2 = membership.findCustomerByInput("Bear Belle");
+        assertNotNull(c2, "Kunden Bear Belle borde hittas");
+        /// assertEquals: expected, actual
+        assertEquals("8204021234",c2.getSocialSecurityNumber(),"Fel personnummer Bear Belle");
+
+        //Ogiltig kund
+        Customer nonCustomer = membership.findCustomerByInput("Anna Eriksson");
+        assertNull(nonCustomer, "Ingen kund borde hittas för detta namn");
     }
 
 }

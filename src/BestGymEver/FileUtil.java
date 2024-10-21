@@ -30,6 +30,8 @@ public class FileUtil {
             while (fileScanner.hasNext()) {
                 firstLine = fileScanner.nextLine();
                 String[] customerDataFirstLine = firstLine.split(",");
+                String socialSecurityNumber = customerDataFirstLine[0].trim();
+                String fullName = customerDataFirstLine[1].trim();
 
                 if (fileScanner.hasNext()) {
                     secondLine = fileScanner.nextLine().trim();
@@ -37,8 +39,7 @@ public class FileUtil {
                 }
 
                 //Personnummer, Namn, MembershipDate
-                Customer c = new Customer(customerDataFirstLine[0], customerDataFirstLine[1],
-                        membershipDate);
+                Customer c = new Customer(socialSecurityNumber, fullName, membershipDate);
 
                 customerList.add(c);
             }
@@ -61,6 +62,7 @@ public class FileUtil {
         Path outFilePath = Paths.get(writeToFile);
         Customer c = customer;
 
+
         try (PrintWriter writer = new PrintWriter(
                 Files.newBufferedWriter(outFilePath, StandardOpenOption.CREATE, StandardOpenOption.APPEND))) {
 
@@ -72,6 +74,11 @@ public class FileUtil {
             // Skriver datumet på nästa rad
             writer.println(DateTime.format(formatter));
 
+        }
+        catch (FileNotFoundException e){
+            System.out.println("Filen kunde inte hittas");
+            e.printStackTrace();
+            System.exit(0);
         }
         catch (IOException e){
             System.out.println("Det gick inte att skriva till fil");
