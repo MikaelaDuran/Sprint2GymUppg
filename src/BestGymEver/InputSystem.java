@@ -37,7 +37,7 @@ public class InputSystem {
     //Hantera input och kontrollera medlem.
     public void writeMembershipStatus (String input) {
         //Anropar metod checkMembership
-        String membershipStatus = membership.checkMembership(input); //checkMembership. Kopplat till for-loop. Går igenom alla kunder
+        String membershipStatus = membership.checkMembershipByInput(input); //checkMembership. Kopplat till for-loop. Går igenom alla kunder
         System.out.println(membershipStatus);
 
         //Kontrollera om kund är nuvarande medlem och logga besöket.

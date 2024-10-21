@@ -17,7 +17,7 @@ public class Membership {
         return LocalDate.now().minusYears(1);
     }
 
-    public Customer findCustomerByInput (String input) {
+    public Customer findCustomerByInput(String input) {
         for (Customer customer : customerList) {
             if (customer.getSocialSecurityNumber().trim().equalsIgnoreCase(input) ||
                     customer.getName().trim().equalsIgnoreCase(input)) {
@@ -28,22 +28,29 @@ public class Membership {
     }
 
     //Kontrollera om nuvarande medlem, föredetta eller obehörig
-    public String checkMembership(String input) {
+    public String checkMembershipByInput(String input) {
         //Anropa metoden findCustomerByInput. For-loop igenom kund listan.
         Customer customer = findCustomerByInput(input);
+        return checkMembership(customer);
+    }
 
-        if (customer != null) {
-
-                if(customer.getMembershipDate().isAfter(oneYearAgo())){
-                    return "Nuvarande medlem";
-                }
-                else{
-                    return "Föredetta medlem";
-                }
-        }
+    public String checkMembership(Customer customer) {
+        if(customer == null){
             return "Obehörig";
+        }
+
+        if(customer.getMembershipDate() == null) {
+            return "Obehörig";
+
+        }
+            if (customer.getMembershipDate().isAfter(oneYearAgo())) {
+                return "Nuvarande medlem";
+            } else {
+                return "Föredetta medlem";
+            }
     }
 
 }
+
 
 
